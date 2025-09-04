@@ -1,41 +1,25 @@
 import { h } from "preact"
 import { useState } from "preact/hooks"
-import { getWeather } from "../../../core/di"
-import { WeatherCard } from "../WeatherCard"
+import { route } from "preact-router"
 
 export default function Home() {
-  const [city, setCity] = useState("Bangkok")
-  const [temp, setTemp] = useState<number | null>(null)
-  const [error, setError] = useState<string | null>(null)
+    const [city, setCity] = useState("Bangkok")
 
-  async function loadWeather() {
-    try {
-      setError(null)
-      const result = await getWeather(city)
-      setTemp(result.main.temp)
-    } catch (e) {
-      console.error(e)
-      setError((e as Error).message)
-      setTemp(null)
+    function handleSearch() {
+        if (city.trim()) {
+            route(`/weather/${encodeURIComponent(city)}`)
+        }
     }
-  }
 
-  return (
-    <div style={{ padding: "1rem" }}>
-      <h1>Weather App</h1>
-      <input
-        value={city}
-        onInput={e => setCity((e.target as HTMLInputElement).value)}
-      />
-      <button onClick={loadWeather}>Search</button>
-
-      {error && (
-        <p style={{ color: "red", marginTop: "1rem" }}>
-          Error: {error}
-        </p>
-      )}
-
-      {temp !== null && !error && <WeatherCard city={city} temp={temp} />}
-    </div>
-  )
+    return (
+        <div className="container">
+            <h1>Weather App</h1>
+            <input
+                value={city}
+                onInput={e => setCity((e.target as HTMLInputElement).value)}
+                placeholder="กรอกชื่อเมือง"
+            />
+            <button onClick={handleSearch}>Search</button>
+        </div>
+    )
 }

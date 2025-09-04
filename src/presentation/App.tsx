@@ -1,13 +1,13 @@
 import { h } from "preact"
-import { Router, Route } from "preact-router"
+import { Route, Router } from "preact-router"
 import Home from "./components/pages/Home"
-import About from "./components/pages/About"
+import WeatherDetails from "./components/pages/WeatherDetails"
 
 export function App() {
-  return (
-    <Router>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-    </Router>
-  )
+    return (
+        <Router>
+            <Route path="/" component={Home} />
+            <Route path="/weather/:city" component={WeatherDetails} />
+        </Router>
+    )
 }
